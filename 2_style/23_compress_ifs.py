@@ -1,41 +1,40 @@
-# STYLE ***************************************************************************
-# content = assignment (Python Advanced)
-#
-# date    = 2022-01-07
-# email   = contact@alexanderrichtertd.com
-#**********************************************************************************
+#******************************************************************************************************************************
 
+#content       = Assignment 
 
-# COMMENT --------------------------------------------------
-# Not optimal
+#date          = November 7, 2024
+
+#to do         = Update style
+
+#author        = Elizabeth Guan <yijie.beth.guan@gmail.com>
+
+#******************************************************************************************************************************
+
+import maya.cmds as mc
+#VScodes keep telling me mc is not defined
+
 def set_color(ctrlList=None, color=None):
+
+    #instead of using if statements, I created a dictionary 
+    color_map = {
+        1:4,
+        2:13,
+        3:25,
+        4:17,
+        5:17,
+        6:15,
+        7:6,
+        8:16
+    }
 
     for ctrlName in ctrlList:
         try:
             mc.setAttr(ctrlName + 'Shape.overrideEnabled', 1)
-        except:
-            pass
+    
+            if color in color_map:
+                mc.setAttr(ctrlName + 'Shape.overrideColor', color_map[color])
 
-        try:
-            if color == 1:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 4)
-            elif color == 2:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 13)
-            elif color == 3:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 25)
-            elif color == 4:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 17)
-            elif color == 5:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 17)
-            elif color == 6:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 15)
-            elif color == 7:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 6)
-            elif color == 8:
-                mc.setAttr(ctrlName + 'Shape.overrideColor', 16)
         except:
             pass
 
 
-# EXAMPLE
-# set_color(['circle','circle1'], 8)

@@ -1,31 +1,35 @@
-# STYLE ***************************************************************************
-# content = assignment
-#
-# date    = 2022-01-07
-# email   = contact@alexanderrichtertd.com
-#************************************************************************************
+#******************************************************************************************************************************
+
+#content       = Assignment 
+
+#date          = November 7, 2024
+
+#to do         = Update style
+
+#author        = Elizabeth Guan <yijie.beth.guan@gmail.com>
+
+#******************************************************************************************************************************
 
 # original: logging.init.py
+import os
+import inspect 
 
-def findCaller(self):
+UNKNOWN_FILE     = "(unknown file)"
+UNKNOWN_FUNCTION = "(unknown function)"
+#stored these as variables
+
+def find_caller():
     """
     Find the stack frame of the caller so that we can note the source
     file name, line number and function name.
     """
-    f = currentframe()
-    #On some versions of IronPython, currentframe() returns None if
-    #IronPython isn't run with -X:Frames.
-    if f is not None:
-        f = f.f_back
-    rv = "(unknown file)", 0, "(unknown function)"
-    while hasattr(f, "f_code"):
-        co = f.f_code
-        filename = os.path.normcase(co.co_filename)
-        if filename == _srcfile:
-            f = f.f_back
-            continue
-        rv = (co.co_filename, f.f_lineno, co.co_name)
-        break
-    return rv
+    caller_info = (UNKNOWN_FILE, 0, UNKNOWN_FUNCTION)
+    
+    for frame_info in inspect.stack()[2:]:  
+        caller_info = (frame_info.filename, frame_info.lineno, frame_info.function)
+        break  
+        #for loop instead of while loop
 
-# How can we make this code better?
+    return caller_info
+
+
