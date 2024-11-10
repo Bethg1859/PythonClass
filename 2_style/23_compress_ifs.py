@@ -10,12 +10,15 @@
 
 #******************************************************************************************************************************
 
+"""
+ Enables color override on specified controls and sets their color in Maya.
+"""
 import maya.cmds as mc
 #VScodes keep telling me mc is not defined
 
 def set_color(ctrlList=None, color=None):
 
-    #instead of using if statements, I created a dictionary 
+    # instead of using if statements, I created a dictionary 
     color_map = {
         1:4,
         2:13,
