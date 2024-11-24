@@ -27,13 +27,6 @@ import maya.cmds as cmds
 import os
 
 def get_asset_folder():
-    """
-    retrieves or creates the asset folder path 
-
-    returns:
-      the path to the asset folder.
-    """
-
     project_dir  = cmds.workspace(query=True, rootDirectory=True)
     asset_folder = os.path.join(project_dir, "assets")
 
@@ -41,21 +34,18 @@ def get_asset_folder():
     if not os.path.exists(asset_folder):
         os.makedirs(asset_folder)
 
+<<<<<<< Updated upstream
 
     #debugging path confirmation
+=======
+    # debugging path confirmation
+>>>>>>> Stashed changes
     print(f"Asset folder path: {asset_folder}")  
     
     return asset_folder
 
 
 def load_default_chain_shapes():
-    """
-    loads the pre-made chain objects in the asset folder
-
-    returns:
-      a list of the loaded shapes
-    """
-
     asset_folder = get_asset_folder()
     loaded_shapes = []
     
@@ -77,15 +67,8 @@ def load_default_chain_shapes():
     print(f"Shapes loaded: {loaded_shapes}")  
     return loaded_shapes
 
-
+# add new base shape and save it to the asset folder
 def add_new_base_shape():
-
-    """
-    adds the selected maya object as a new base shape
-    it will delete history, center pivot, move to origin, and freeze transformation 
-    then it will export the new base shape to asset folder as a fbx file
-    """
-
     selection = cmds.ls(selection=True)
     if not selection:
         cmds.warning("No object selected. Please select an object to add as a base shape.")
@@ -93,6 +76,7 @@ def add_new_base_shape():
     
     shape = selection[0]
 
+<<<<<<< Updated upstream
     #delete history 
     cmds.delete(shape, ch=True) 
 
@@ -103,6 +87,11 @@ def add_new_base_shape():
     cmds.move(0, 0, 0, shape)  
 
     #freeze transformation
+=======
+    cmds.delete(shape, constructionHistory=True) 
+    cmds.xform(shape, centerPivots=True)  
+    cmds.move(0, 0, 0, shape)  
+>>>>>>> Stashed changes
     cmds.makeIdentity(shape, apply=True, translate=True, rotate=True, scale=True, normal=False)
 
 
@@ -126,15 +115,54 @@ def populate_shape_menu():
 
             #add menu items to optionMenu
             cmds.menuItem(parent=shape_menu, label=shape_name)  
+<<<<<<< Updated upstream
 
             #debug each menu item addition
+=======
+            # debug each menu item addition
+>>>>>>> Stashed changes
             print(f"Added {shape_name} to the dropdown menu")  
 
+# function to create the chain based on user input
+def create_chain(shape_menu, scale_field_grp, z_offset_field, link_count_field):
+    selected_shape = cmds.optionMenu(shape_menu, query=True, value=True)
+    scale_x, scale_y, scale_z = cmds.floatFieldGrp(scale_field_grp, query=True, value=True)
+    z_offset_percentage = cmds.floatSliderGrp(z_offset_field, query=True, value=True)
+    link_count = cmds.intField(link_count_field, query=True, value=True)
+
+    # ensure the selected shape is loaded into the scene
+    asset_folder = get_asset_folder()
+    file_path    = os.path.join(asset_folder, f"{selected_shape}.fbx")
+    if not cmds.objExists(selected_shape) and os.path.exists(file_path):
+        cmds.file(file_path, i=True, type="FBX")
+    
+    # create instances with specified attributes
+    bounding_box = cmds.exactWorldBoundingBox(selected_shape)
+    z_length     = abs(bounding_box[5] - bounding_box[2]) * scale_z
+    z_offset     = z_length * z_offset_percentage
+    instances    = []
+
+    for i in range(link_count):
+        instance = cmds.instance(selected_shape)[0]
+        instances.append(instance)
+        cmds.scale(scale_x, scale_y, scale_z, instance)
+        rotation = 90 if i % 2 == 0 else 0
+        cmds.setAttr(f"{instance}.rotateZ", rotation)
+        cmds.setAttr(f"{instance}.translateZ", i * z_offset)
+
+    print(f"Created {link_count} instances of {selected_shape}.")
+
 def create_chain_tool_gui():
+<<<<<<< Updated upstream
     """
     sets up the GUI for the chain creation tool, including dropdowns, input fields, and buttons.
     """
     loaded_shapes = load_default_chain_shapes()  # Load shapes from asset folder
+=======
+
+    # Load shapes from asset folder
+    loaded_shapes = load_default_chain_shapes()  
+>>>>>>> Stashed changes
     if cmds.window("chainToolWin", exists=True):
         cmds.deleteUI("chainToolWin")
 
@@ -166,5 +194,13 @@ def create_chain_tool_gui():
 
     cmds.showWindow("chainToolWin")
 
+<<<<<<< Updated upstream
 #launch GUI
 create_chain_tool_gui()
+=======
+# launch GUI
+create_chain_tool_gui()
+
+
+
+>>>>>>> Stashed changes
