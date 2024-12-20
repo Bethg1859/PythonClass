@@ -1,15 +1,9 @@
 #******************************************************************************************************************************
-
 #content       = Chain creation tool in Maya 
-
-#version       = 0.1.3
-
-#date          = November 24th 
-
-#dependencies  = maya.cmds, json
-
+#version       = 0.1.4
+#date          = December 7th 
+#dependencies  = maya.cmds, json, PyQT, PySide2
 #author        = Elizabeth Guan <yijie.beth.guan@gmail.com>
-
 #******************************************************************************************************************************
 
 """
@@ -46,13 +40,7 @@ class ChainTool:
 
 def _load_or_create_config(self):
     """
-    Load existing config or create a default one.
-
-    Why use a configuration file:
-    - Allows easy customization of settings (e.g., scale, link count) without editing the script.
-    - Keeps static data separate from code for cleaner and more maintainable logic.
-    - Persists user preferences across sessions for better flexibility.
-    """
+    Load existing config or create a default one."""
     project_dir = cmds.workspace(query=True, rootDirectory=True)
     config_path = os.path.join(project_dir, "chain_tool_config.json")
     
