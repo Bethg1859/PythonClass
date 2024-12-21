@@ -17,7 +17,6 @@ New shapes can be added directly through one click.
 import os
 import json
 import maya.cmds as cmds
-from PySide2 import QtWidgets, QtCore, QtUiTools
 
 def maya_error_handler(func):
     """Decorator for handling Maya operations and errors"""
